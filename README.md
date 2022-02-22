@@ -18,20 +18,20 @@ but provides more information, as does the Unix/Linux/GNU
 command [`cmp`](https://www.gnu.org/software/diffutils/).
 
 ```
-    filecmp(path1::AbstractString, path2::AbstractString; info=Val(false); limit=0)
-    filecmp(io1::IO, io2::IO; info=Val(false); limit=0)
+    filecmp(path1::AbstractString, path2::AbstractString, bufsize=0; info=Val(false); limit=0)
+    filecmp(io1::IO, io2::IO, bufsize=0; info=Val(false), limit=0)
 ```
 
-Return `true` if `path1` and `path2` are equal byte by byte. Otherwise return `false`.
-If either file does not exist an exception is thrown. If `info` is `true`, then
-return an instance of `FileCmp.Info` instead of `Bool`.
-The keyword argument `info` may be one of `true`, `false`, `Val(true)`, or
-`Val(false)`. The latter two are supported in case the application requires
-the return type to be inferrable.
-
-If `limit` is greater than zero, then read at most `limit` bytes.
-
-The files are read into buffers of `bufsize` bytes. If `bufsize=0`, then a default is used.
+- Return `true` if `path1` and `path2` are equal byte by byte. Otherwise return `false`.
+- If either file does not exist an exception is thrown.
+- If `info` is `true`, then return an instance of `FileCmp.Info` instead of `Bool`.
+  The instance of `FileCmp.Info` is then queried with functions `files_equal`, `bytes_read`, and `got_eof`
+  to get information similar to Unix `cmp`.
+- The keyword argument `info` may be one of `true`, `false`, `Val(true)`, or
+  `Val(false)`. The latter two are supported in case the application requires
+   the return type to be inferrable.
+- If `limit` is greater than zero, then read at most `limit` bytes.
+- The files are read into buffers of `bufsize` bytes. If `bufsize=0`, then a default is used.
 
 
 #### function `files_equal`
