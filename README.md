@@ -10,6 +10,14 @@ This code is adapted from an example in [this Discourse post](https://discourse.
 
 Only `filecmp` is exported.
 
+#### Example
+
+```julia
+julia> using FileCmp
+julia> filecmp("path1", "path2")
+true
+```
+
 #### function `filecmp`
 
 `filecmp` is similar to the Python function
