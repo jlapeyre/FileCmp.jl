@@ -8,6 +8,8 @@ export filecmp
 Information on result of `filecmp(path1, path2; info=true)`, which compares
 the files `path1` and `path2` byte by byte.
 
+Instances of this type  may be queried by the functions `files_equal`, `got_eof`, and `bytes_read`.
+
 # Fields
 - _byte_index::Int : `0` if no differing bytes were found.
                       Otherwise the first index at which differing bytes were found.
@@ -53,7 +55,7 @@ end
 The number of bytes read from each file before either differing bytes were found,
 or EOF on one or both files.
 """
-bytes_read(info::Info) = info.bytes_read
+bytes_read(info::Info) = info._bytes_read
 
 
 # Return 0 if buffers are equal when truncated to the same length,
@@ -93,9 +95,12 @@ information on how they differ.
 For `info==false` the return type is `Bool`.
 In this case, return `true` if files at `path1` and `path2` are equal byte by byte
 and `false` otherwise.
+
+
 For `info==true` the return type is `FileCmp.Info`, which records at which byte
 index, if any, the files differ, and a comparison of the sizes of the files.
 (See [`FileCmp.Info`](@ref)).
+The result may be queried by the functions `files_equal`, `got_eof`, and `bytes_read`.
 
 If `path1` or `path2` does not exist an exception is thrown.
 
@@ -105,6 +110,23 @@ The first two are more convenient. The latter two allow the return type to be in
 If `limit` is greater than zero, then read at most `limit` bytes.
 
 The files are read into buffers of `bufsize` bytes. If `bufsize=0`, then a default is used.
+
+# Examples
+
+Simplest use
+```julia
+using FileCmp
+filecmp("file1", "file2")  # Return `true` or `false`
+```
+
+For more information do this
+```julia
+using FileCmp: filecmp, bytes_read, got_eof, files_equal
+info_result = filecmp("file1", "file2"; info=true)
+bytes_read(info_result) # how many bytes were read
+got_eof(info_result) # Did we get eof on a file ? (see the docstring for got_eof)
+files_equal(info_result) # are the files equal ?
+```
 """
 function filecmp(io1::IO, io2::IO, _bufsize::Integer=0; info=Val(false), limit::Integer=0)
     _bufsize < 0 && throw(ArgumentError("bufsize cannot be less than zero. got " * _bufsize))

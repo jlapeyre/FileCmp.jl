@@ -1,7 +1,7 @@
 name = "FileCmp"
 uuid = "343a5541-a696-4ae7-8102-bc61c09e1896"
 authors = ["John Lapeyre <jlapeyre@users.noreply.github.com> and contributors"]
-version = "0.1.0"
+version = "0.1.1"
 
 [compat]
 julia = "1"

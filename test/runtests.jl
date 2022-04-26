@@ -1,5 +1,5 @@
 using FileCmp
-using FileCmp: Info, files_equal, got_eof
+using FileCmp: Info, files_equal, got_eof, bytes_read
 using Test
 
 @testset "FileCmp.jl" begin
@@ -25,6 +25,7 @@ using Test
     _info = filecmp(path("test1"), path("test1"); info=true)
     @test files_equal(_info)
     @test got_eof(_info) == 0
+    @test bytes_read(_info) == 0  # files are the same
     @test ! filecmp(path("test1"), path("test2"))
 
     _info = filecmp(path("test1"), path("test2"); info=true)
@@ -32,6 +33,7 @@ using Test
     @test _info._byte_index == 0
     @test _info._size_cmp == 1
     @test got_eof(_info) == 1
+    @test bytes_read(_info) == nbytes_trunc
     @test filecmp(path("test1"), path("test2"); limit=filesize(path("test2")))
     @test ! filecmp(path("test1"), path("test2"); limit=(filesize(path("test2")) + 1))
 
