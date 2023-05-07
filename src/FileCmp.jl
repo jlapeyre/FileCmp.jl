@@ -129,7 +129,7 @@ files_equal(info_result) # are the files equal ?
 ```
 """
 function filecmp(io1::IO, io2::IO, _bufsize::Integer=0; info=Val(false), limit::Integer=0)
-    _bufsize < 0 && throw(ArgumentError("bufsize cannot be less than zero. got " * _bufsize))
+    _bufsize < 0 && throw(ArgumentError("bufsize cannot be less than zero. got $_bufsize"))
     bufsize = iszero(_bufsize) ? 65536 : Int(_bufsize)
     buf1 = Vector{UInt8}(undef, bufsize)
     buf2 = similar(buf1)

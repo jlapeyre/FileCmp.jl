@@ -2,6 +2,11 @@ using FileCmp
 using FileCmp: Info, files_equal, got_eof, bytes_read
 using Test
 
+include("aqua_test.jl")
+if VERSION >= v"1.7"
+    include("jet_test.jl")
+end
+
 @testset "FileCmp.jl" begin
     write_file = function(fname::String, data)
         open(fname, "w") do io
