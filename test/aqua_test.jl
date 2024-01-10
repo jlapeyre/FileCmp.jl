@@ -7,11 +7,6 @@ const ThePackage = FileCmp
     Aqua.test_deps_compat(ThePackage)
 end
 
-# This often gives false positive
-@testset "aqua project toml formatting" begin
-    Aqua.test_project_toml_formatting(ThePackage)
-end
-
 @testset "aqua unbound_args" begin
     Aqua.test_unbound_args(ThePackage)
 end
@@ -27,7 +22,7 @@ end
 end
 
 @testset "aqua piracy" begin
-    Aqua.test_piracy(ThePackage)
+    Aqua.test_piracies(ThePackage)
 end
 
 @testset "aqua project extras" begin
@@ -36,4 +31,8 @@ end
 
 @testset "aqua state deps" begin
     Aqua.test_stale_deps(ThePackage)
+end
+
+@testset "aqua persistent tasks" begin
+    Aqua.test_persistent_tasks(ThePackage)
 end

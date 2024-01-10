@@ -8,7 +8,9 @@ const package_to_analyze = FileCmp
 ## the report message. The second is the file it occurs in.
 ## Not very precise, but ok for now.
 const SKIP_MATCHES = [
-  #  ("type Nothing has no field den", "parameters.jl"),
+    #  ("type Nothing has no field den", "parameters.jl"),
+    # Nested open(path2...) call causes this
+    ("invalid builtin function call", "FileCmp.jl"),
 ]
 
 ## Skip reports for which return true

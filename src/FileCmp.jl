@@ -143,8 +143,13 @@ function filecmp(io1::IO, io2::IO, _bufsize::Integer=0; info=Val(false), limit::
         if limit > 0
             remaining -= n
         end
-#        ret = _memcmp(buf1, buf2, n)
-        ret = Base._memcmp(buf1, buf2, n)
+        #        ret = _memcmp(buf1, buf2, n)
+        ret = Base._memcmp(memcmparg(buf1), memcmparg(buf2), n)
+        # if VERSION > v"1.10-"
+        #     ret = Base._memcmp(Base.unsafe_convert(Ptr{UInt8}, buf1),  Base.unsafe_convert(Ptr{UInt8}, buf2), n)
+        # else
+        #     ret = Base._memcmp(buf1, buf2, n)
+        # end
         if ret != 0
             ! _is_true(info) && return false
             n_last = _where_memcmp(buf1, buf2, n)
@@ -158,6 +163,16 @@ function filecmp(io1::IO, io2::IO, _bufsize::Integer=0; info=Val(false), limit::
     end
     _info = Info(0, cmp(n1, n2), count)
     return _is_true(info) ? _info : files_equal(_info)
+end
+
+function memcmparg(x)
+    if VERSION > v"1.11-"
+        return  convert(Ptr{UInt8}, x.ref.ptr_or_offset)
+    elseif VERSION > v"1.10-"
+        return Base.unsafe_convert(Ptr{UInt8}, x)
+    else
+        return x
+    end
 end
 
 _is_true(x::Bool) = x
