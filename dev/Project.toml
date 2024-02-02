@@ -1,0 +1,4 @@
+[deps]
+Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
+FileCmp = "343a5541-a696-4ae7-8102-bc61c09e1896"
+JET = "c3a54625-cd67-489e-a8e7-0a5a0ff4e31b"
